@@ -1,5 +1,9 @@
 name: SAST scan
 on:
+  push:
+    branches:
+      - master
+      - feature/*
   schedule:
   - cron: "0 */4 * * *"
 
@@ -11,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Self sast-scan
-      uses: AppThreat/sast-scan-action@v1.0.1
+      uses: AppThreat/sast-scan-action@master
       with:
         output: reports
         type: python,credscan,bom
