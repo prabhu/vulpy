@@ -1,0 +1,22 @@
+name: SAST scan
+on:
+  schedule:
+  - cron: "0 */4 * * *"
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Self sast-scan
+      uses: AppThreat/sast-scan-action@v1.0.0
+      with:
+        output: reports
+        type: python,credscan,bom
+    - name: Upload scan reports
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: sast-scan-reports
+        path: reports
