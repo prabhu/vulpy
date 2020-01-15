@@ -1,0 +1,15 @@
+steps:
+- name: "gcr.io/$PROJECT_ID/sast-scan"
+  id: "Perform sast-scan"
+  args: ["--type", "python,credscan", "--out_dir", "reports"]
+  env:
+  - 'WORKSPACE=https://github.com/AppThreat/vulpy/blob/$COMMIT_SHA'
+  - 'REPOSITORY_URL=https://github.com/AppThreat/vulpy'
+  - 'COMMIT_SHA=$COMMIT_SHA'
+  - 'BRANCH=$BRANCH_NAME'
+- name: gcr.io/cloud-builders/gsutil
+  args: ['-m', 'cp', 'reports/*.json', 'gs://sast_reports/']
+- name: gcr.io/$PROJECT_ID/bq
+  args: ['load', '--ignore_unknown_values', '--source_format=NEWLINE_DELIMITED_JSON', 'sastdb.all', 'reports/all-report.json']
+
+timeout: 1200s
