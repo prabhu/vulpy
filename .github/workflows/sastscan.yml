@@ -19,6 +19,8 @@ jobs:
       with:
         output: reports
         type: python,credscan,bom
+      env:
+        SCAN_ID: ${{ env.GITHUB_SHA }}
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
