@@ -21,6 +21,7 @@ jobs:
         type: python,credscan,bom
       env:
         SCAN_ID: ${{ github.sha }}
+        WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.ref }}
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
