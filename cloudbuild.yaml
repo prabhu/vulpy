@@ -1,7 +1,7 @@
 steps:
 - name: "gcr.io/$PROJECT_ID/sast-scan"
   id: "Perform sast-scan"
-  args: ["--type", "python", "--out_dir", "reports"]
+  args: ["--type", "python,depscan", "--out_dir", "reports"]
   env:
   - 'WORKSPACE=https://github.com/AppThreat/vulpy/blob/$COMMIT_SHA'
   - 'REPOSITORY_URL=https://github.com/AppThreat/vulpy'
