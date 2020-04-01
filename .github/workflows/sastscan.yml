@@ -19,9 +19,8 @@ jobs:
       continue-on-error: true
       with:
         output: reports
-        type: python,credscan,bom
+        type: python,credscan
       env:
-        SCAN_ID: ${{ github.sha }}
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
     - name: Self dep-scan
       uses: AppThreat/dep-scan-action@master
