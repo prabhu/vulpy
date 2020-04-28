@@ -9,10 +9,7 @@ on:
 
 jobs:
   Scan_build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Security scan
