@@ -1,4 +1,4 @@
-name: SAST scan
+name: ShiftLeft Scan
 on:
   push:
     branches:
@@ -8,25 +8,19 @@ on:
   - cron: "0 */4 * * *"
 
 jobs:
-  build:
+  Scan_build:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
-    - name: Self sast-scan
-      uses: AppThreat/sast-scan-action@master
-      continue-on-error: true
+    - name: Security scan
+      uses: ShiftLeftSecurity/scan-action@master
       with:
         output: reports
-        type: python,credscan
+        type: credscan,python,depscan
       env:
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
-    - name: Self dep-scan
-      uses: AppThreat/dep-scan-action@master
-      env:
-        VULNDB_HOME: ${{ github.workspace }}/db
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
