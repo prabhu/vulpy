@@ -9,9 +9,10 @@ on:
 
 jobs:
   Scan_build:
-
-    runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v1
     - name: Security scan
@@ -24,5 +25,5 @@ jobs:
     - name: Upload scan reports
       uses: actions/upload-artifact@v1.0.0
       with:
-        name: sast-scan-reports
+        name: scan-reports
         path: reports
