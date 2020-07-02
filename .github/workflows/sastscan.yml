@@ -6,14 +6,18 @@ on:
       - feature/*
 jobs:
   Scan_build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v1
+    - name: Install podman
+      run: |
+        echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
+        curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key | sudo apt-key add -
+        sudo apt-get update -qq
+        sudo apt-get -qq -y install podman
     - name: Security scan
-      uses: ShiftLeftSecurity/scan-action@master
-      with:
-        output: reports
-        type: credscan,python,depscan
+      run: |
+        podman run -e WORKSPACE -e GITHUB_TOKEN -v "$(pwd):/app" shiftleft/scan scan --type credscan,python,depscan --src /app -o /app/reports
       env:
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
