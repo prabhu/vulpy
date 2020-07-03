@@ -17,7 +17,8 @@ jobs:
         sudo apt-get -qq -y install podman
     - name: Security scan
       run: |
-        podman run -e WORKSPACE -e GITHUB_TOKEN -v "$(pwd):/app" shiftleft/scan scan --type credscan,python,depscan --src /app -o /app/reports
+        ls -l ${GITHUB_WORKSPACE}
+        podman run -e WORKSPACE -e GITHUB_TOKEN -v "${GITHUB_WORKSPACE}:/app" shiftleft/scan scan --type credscan,python,depscan --src /app -o /app/reports
       env:
         WORKSPACE: https://github.com/${{ github.repository }}/blob/${{ github.sha }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
